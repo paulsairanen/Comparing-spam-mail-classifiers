@@ -16,8 +16,6 @@
 # 
 # The classification of messages can be formulated into a machine learning problem and in this case it is a classification problem. In this case the data points are messages. The feature characterizing the datapoint is the text in the message and in Python this is represented using String-datatype. The label that the model is trying to predict is represented using one of two categories: spam or ham. This type of classification is described as binary classification because the label can have two different values [2]. The used data contains labels for each datapoint meaning that supervised learning methods are used to classify messages [2]. Part of the used data can be seen by running the code below.
 
-# In[1]:
-
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -55,9 +53,6 @@ print('Testing set shape:', msg_test.shape)
 # The loss function used to measure the linear hypothesis in SVM-model is hinge loss L((x, y), h) := max{0, 1 − y · h(x)} [2]. The loss function used to measure the linear hypothesis in logistic regression is logistic loss L((x, y), h) := log(1 + exp(−yh(x))) [2]. These functions are used by these models to assess the usefulness of a hypothesis map for classifying datapoints [2]. However, the results from these loss functions cannot be directly compared because they measure the loss in different scales. Therefore, training accuracies are also computed using the zero-one loss. The performance of the models is analyzed using the accuracy obtained from grid-search cross validation using zero-one loss.
 # 
 
-# In[2]:
-
-
 # Train and validate SVM
 
 from sklearn.pipeline import Pipeline
@@ -77,14 +72,8 @@ svm_hinge_loss = hinge_loss(label_train, text_clf.decision_function(msg_train))
 print('Hinge loss:', svm_hinge_loss)
 
 
-# In[3]:
-
-
 # Show the usable hyperparameters for the chosen model
 print(text_clf.get_params().keys())
-
-
-# In[4]:
 
 
 # Hyperparameter tuning using GridSearchCV. Note: this computation might take some time.
@@ -110,9 +99,6 @@ for param_name in sorted(parameters.keys()):
     print("\t%s: %r" % (param_name, best_parameters[param_name]))
 
 
-# In[5]:
-
-
 # Train and validate logistic regression
 print('Logistic regression:')
 # Feature extraction and model selection using Pipeline object (setting the loss function as 'log' chooses the Logistic regression model)
@@ -124,9 +110,6 @@ log_train_err = text_clf2.fit(msg_train, label_train).score(msg_train, label_tra
 print('Training error:', log_train_err)
 logistic_loss = log_loss(label_train, text_clf2.predict_proba(msg_train))
 print('Logistic loss:', logistic_loss)
-
-
-# In[6]:
 
 
 # Find values for chosen hyperparameters
@@ -146,9 +129,6 @@ print("Best parameter set using logistic regression:")
 best_parameters2 = grid_search2.best_estimator_.get_params()
 for param_name in sorted(parameters2.keys()):
     print("\t%s: %r" % (param_name, best_parameters2[param_name]))
-
-
-# In[7]:
 
 
 # Test the better performing model (SVM)
@@ -171,8 +151,6 @@ print(metrics.classification_report(label_test, predicted, target_names=target_n
 # The results imply that the SVM-model performs slightly better for chosen classification task because the validation accuracy is higher. Now the SVM-model can be further tested using the unused test set allocated from the whole data to evaluate the performance. The testing error is 0.05 and accuracy is 0.95 when using the zero-one loss. All the results can be seen by running the code below. Note that the results might slightly vary depending of the order of the data. 
 # 
 # Table 1. The chosen model (SVM) is highlighted due to having better validation accuracy. The training errors (losses) are computed using hinge loss and logistic loss and therefore should not be compared directly to each other. Note that since the SVM and logistic regression cross-validation scores are very similar, sometimes the score for logistic regression is higher depending on the ordering of the data. Usually the SVM CV-score is higher than the logistic regression CV-score.
-
-# In[8]:
 
 
 from tabulate import tabulate
@@ -214,9 +192,3 @@ print(table)
 # 
 # 
 # 7. Almeida, T. A., Hidalgo, J. M. G., & Yamakami, A., 2011. “Contributions to the study of SMS spam filtering: new collection and results”, In Proceedings of the 11th ACM symposium on Document engineering (pp. 259-262). Available: https://dl.acm.org/doi/pdf/10.1145/2034691.2034742 [Accessed March 28, 2021]
-
-# In[ ]:
-
-
-
-
